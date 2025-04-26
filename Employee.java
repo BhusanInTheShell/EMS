@@ -2,7 +2,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-// Abstract Employee class demonstrating abstraction
+// Class abstraction
 public abstract class Employee implements Serializable {
     protected String id;
     protected String name;
@@ -22,10 +22,10 @@ public abstract class Employee implements Serializable {
         this.hireDate = new Date(); // Current date by default
     }
 
-    // Abstract method demonstrating polymorphism
+    //  Demonstrating polymorphism
     public abstract double calculateSalary();
 
-    // Common methods for all employees
+    // Common methods for all the employees
     public void setPerformanceRating(int rating) {
         if (rating >= 1 && rating <= 5) {
             this.performanceRating = rating;

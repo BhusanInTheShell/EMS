@@ -3,7 +3,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-// Main class with text-based UI
+// Main class for text-based UI
 public class EMSApplication {
     private static Scanner scanner = new Scanner(System.in);
     private static EmployeeManagementSystem ems;
@@ -12,7 +12,7 @@ public class EMSApplication {
     public static void main(String[] args) {
         ems = new EmployeeManagementSystem(DATA_FILE);
         
-        // Check if data file exists, if not generate sample data
+        // Checking if data file exists, if not we can generate sample data
         File file = new File(DATA_FILE);
         if (!file.exists()) {
             System.out.println("No data file found. Generating sample data...");
@@ -22,7 +22,7 @@ public class EMSApplication {
             ems.loadEmployees();
         }
         
-        // Display main menu
+        // Display the main menu
         boolean exit = false;
         while (!exit) {
             displayMainMenu();
@@ -134,7 +134,7 @@ public class EMSApplication {
         String department = getStringInput("Enter new department (leave blank to keep current): ");
         String salaryStr = getStringInput("Enter new base salary (leave blank to keep current): ");
         
-        // Only update fields that have new values
+        // Only update the fields that have new data
         if (!name.isEmpty()) emp.setName(name);
         if (!department.isEmpty()) emp.setDepartment(department);
         if (!salaryStr.isEmpty()) {
@@ -255,7 +255,7 @@ public class EMSApplication {
         }
     }
 
-    // Helper methods for input
+    // Helper methods for input field
     private static int getIntInput(String prompt) {
         while (true) {
             try {

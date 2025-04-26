@@ -12,7 +12,7 @@ public class EmployeeManagementSystem {
         this.employees = new ArrayList<>(); // Using ArrayList for efficient random access
     }
 
-    // Load employees from file
+    // Load employees from the file
     @SuppressWarnings("unchecked")
     public void loadEmployees() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(dataFile))) {
@@ -25,7 +25,7 @@ public class EmployeeManagementSystem {
         }
     }
 
-    // Save employees to file
+    // Save employees to the file
     public void saveEmployees() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(dataFile))) {
             oos.writeObject(employees);
@@ -35,13 +35,13 @@ public class EmployeeManagementSystem {
         }
     }
 
-    // Add a new employee
+    // Add a new employee to the file
     public void addEmployee(Employee employee) {
         employees.add(employee);
         System.out.println("Employee added successfully: " + employee.getName());
     }
 
-    // Remove an employee by ID
+    // Remove an employee by their ID
     public void removeEmployee(String id) {
         Iterator<Employee> iterator = employees.iterator();
         while (iterator.hasNext()) {
@@ -55,7 +55,7 @@ public class EmployeeManagementSystem {
         System.out.println("Employee with ID " + id + " not found.");
     }
 
-    // Find employee by ID
+    // Find employee by their ID
     public Employee findEmployeeById(String id) {
         for (Employee emp : employees) {
             if (emp.getId().equals(id)) {
@@ -65,7 +65,7 @@ public class EmployeeManagementSystem {
         return null;
     }
 
-    // Find employees by name (could be multiple)
+    // Find employees by name
     public List<Employee> findEmployeesByName(String name) {
         List<Employee> result = new ArrayList<>();
         for (Employee emp : employees) {
@@ -76,7 +76,7 @@ public class EmployeeManagementSystem {
         return result;
     }
 
-    // Find employees by performance rating
+    // Find employees by performance ratings
     public List<Employee> findEmployeesByPerformance(int rating) {
         List<Employee> result = new ArrayList<>();
         for (Employee emp : employees) {
@@ -87,7 +87,7 @@ public class EmployeeManagementSystem {
         return result;
     }
 
-    // List all employees
+    // List all the employees
     public void listAllEmployees() {
         if (employees.isEmpty()) {
             System.out.println("No employees in the system.");
@@ -99,7 +99,7 @@ public class EmployeeManagementSystem {
         }
     }
 
-    // Update employee information
+    // Update employees information
     public void updateEmployee(String id, String name, String department, double baseSalary) {
         Employee emp = findEmployeeById(id);
         if (emp != null) {
@@ -112,26 +112,26 @@ public class EmployeeManagementSystem {
         }
     }
 
-    // Generate sample data
+    // Generate sample datas
     public void generateSampleData() {
-        // Clear existing data
+        // Clear existing datas
         employees.clear();
         
         // Add sample employees
-        addEmployee(new RegularEmployee("E001", "John Doe", "IT", 50000));
-        addEmployee(new Manager("E002", "Jane Smith", "HR", 70000));
+        addEmployee(new RegularEmployee("E001", "Anish DC", "IT", 50000));
+        addEmployee(new Manager("E002", "Sandesh Karki", "HR", 70000));
         
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date endDate = sdf.parse("2023-12-31");
-            addEmployee(new Intern("E003", "Mike Johnson", "Marketing", 20000, endDate));
+            addEmployee(new Intern("E003", "Ramu Kaka", "Marketing", 20000, endDate));
         } catch (Exception e) {
             System.out.println("Error creating sample data: " + e.getMessage());
         }
         
         // Add more sample employees as needed
-        addEmployee(new RegularEmployee("E004", "Alice Brown", "Finance", 55000));
-        addEmployee(new Manager("E005", "Bob Wilson", "Operations", 75000));
+        addEmployee(new RegularEmployee("E004", "Shyam Bahadur", "Finance", 55000));
+        addEmployee(new Manager("E005", "Hari Bahadur", "Operations", 75000));
         
         System.out.println("Sample data generated with " + employees.size() + " employees.");
     }
