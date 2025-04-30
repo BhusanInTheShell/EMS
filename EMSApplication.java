@@ -1,9 +1,7 @@
-import java.util.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
-// Main class for text-based UI
 public class EMSApplication {
     private static Scanner scanner = new Scanner(System.in);
     private static EmployeeManagementSystem ems;
@@ -11,8 +9,6 @@ public class EMSApplication {
 
     public static void main(String[] args) {
         ems = new EmployeeManagementSystem(DATA_FILE);
-        
-        // Checking if data file exists, if not we can generate sample data
         File file = new File(DATA_FILE);
         if (!file.exists()) {
             System.out.println("No data file found. Generating sample data...");
@@ -21,13 +17,12 @@ public class EMSApplication {
         } else {
             ems.loadEmployees();
         }
-        
-        // Display the main menu
+
         boolean exit = false;
         while (!exit) {
             displayMainMenu();
             int choice = getIntInput("Enter your choice: ");
-            
+
             switch (choice) {
                 case 1:
                     ems.loadEmployees();
@@ -61,6 +56,7 @@ public class EMSApplication {
                     System.out.println("Invalid choice. Please try again.");
             }
         }
+        scanner.close();
     }
 
     private static void displayMainMenu() {
@@ -82,22 +78,24 @@ public class EMSApplication {
         System.out.println("2. Manager");
         System.out.println("3. Intern");
         System.out.println("4. Back to main menu");
-        
+
         int typeChoice = getIntInput("Enter employee type: ");
         if (typeChoice == 4) return;
-        
+
         String id = getStringInput("Enter employee ID: ");
         String name = getStringInput("Enter employee name: ");
         String department = getStringInput("Enter department: ");
         double baseSalary = getDoubleInput("Enter base salary: ");
-        
+
         Employee employee = null;
         switch (typeChoice) {
             case 1:
-                employee = new RegularEmployee(id, name, department, baseSalary);
+                double overtime = getDoubleInput("Enter overtime pay: ");
+                employee = new RegularEmployee(id, name, department, baseSalary, overtime);
                 break;
             case 2:
-                employee = new Manager(id, name, department, baseSalary);
+                double bonus = getDoubleInput("Enter bonus: ");
+                employee = new Manager(id, name, department, baseSalary, bonus);
                 break;
             case 3:
                 try {
@@ -114,38 +112,36 @@ public class EMSApplication {
                 System.out.println("Invalid choice. Employee not added.");
                 return;
         }
-        
         ems.addEmployee(employee);
     }
 
     private static void updateEmployeeMenu() {
         String id = getStringInput("Enter employee ID to update: ");
         Employee emp = ems.findEmployeeById(id);
-        
+
         if (emp == null) {
             System.out.println("Employee not found.");
             return;
         }
-        
+
         System.out.println("Current employee details:");
         System.out.println(emp);
-        
+
         String name = getStringInput("Enter new name (leave blank to keep current): ");
         String department = getStringInput("Enter new department (leave blank to keep current): ");
         String salaryStr = getStringInput("Enter new base salary (leave blank to keep current): ");
-        
-        // Only update the fields that have new data
+
         if (!name.isEmpty()) emp.setName(name);
         if (!department.isEmpty()) emp.setDepartment(department);
         if (!salaryStr.isEmpty()) {
             try {
                 double salary = Double.parseDouble(salaryStr);
-                emp.setBaseSalary(salary);
+                if (salary >= 0) emp.setBaseSalary(salary);
+                else System.out.println("Salary cannot be negative. Salary not updated.");
             } catch (NumberFormatException e) {
                 System.out.println("Invalid salary format. Salary not updated.");
             }
         }
-        
         System.out.println("Employee updated successfully.");
     }
 
@@ -160,10 +156,10 @@ public class EMSApplication {
         System.out.println("2. By Name");
         System.out.println("3. By Performance Rating");
         System.out.println("4. Back to main menu");
-        
+
         int choice = getIntInput("Enter your choice: ");
         if (choice == 4) return;
-        
+
         switch (choice) {
             case 1:
                 String id = getStringInput("Enter employee ID: ");
@@ -211,22 +207,22 @@ public class EMSApplication {
     private static void managePerformanceMenu() {
         String id = getStringInput("Enter employee ID: ");
         Employee emp = ems.findEmployeeById(id);
-        
+
         if (emp == null) {
             System.out.println("Employee not found.");
             return;
         }
-        
+
         System.out.println("\nManage Performance for: " + emp.getName());
         System.out.println("1. Set performance rating");
         System.out.println("2. Issue warning");
         System.out.println("3. Issue appraisal");
         System.out.println("4. View current performance");
         System.out.println("5. Back to main menu");
-        
+
         int choice = getIntInput("Enter your choice: ");
         if (choice == 5) return;
-        
+
         switch (choice) {
             case 1:
                 int rating = getIntInput("Enter new performance rating (1-5): ");
@@ -255,7 +251,6 @@ public class EMSApplication {
         }
     }
 
-    // Helper methods for input field
     private static int getIntInput(String prompt) {
         while (true) {
             try {
@@ -271,7 +266,9 @@ public class EMSApplication {
         while (true) {
             try {
                 System.out.print(prompt);
-                return Double.parseDouble(scanner.nextLine());
+                double value = Double.parseDouble(scanner.nextLine());
+                if (value >= 0) return value;
+                System.out.println("Value cannot be negative.");
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number.");
             }
@@ -279,7 +276,11 @@ public class EMSApplication {
     }
 
     private static String getStringInput(String prompt) {
-        System.out.print(prompt);
-        return scanner.nextLine();
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+            if (!input.isEmpty()) return input;
+            System.out.println("Input cannot be empty.");
+        }
     }
 }

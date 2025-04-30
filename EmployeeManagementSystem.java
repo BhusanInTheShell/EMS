@@ -1,18 +1,18 @@
 import java.io.*;
-import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
+import java.util.*;
 
-// Employee Management System class
 public class EmployeeManagementSystem {
-    private List<Employee> employees; // Using List interface for polymorphism
+    private List<Employee> employees;
     private String dataFile;
 
     public EmployeeManagementSystem(String dataFile) {
         this.dataFile = dataFile;
-        this.employees = new ArrayList<>(); // Using ArrayList for efficient random access
+        this.employees = new ArrayList<>();
     }
 
-    // Load employees from the file
     @SuppressWarnings("unchecked")
     public void loadEmployees() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(dataFile))) {
@@ -25,23 +25,31 @@ public class EmployeeManagementSystem {
         }
     }
 
-    // Save employees to the file
     public void saveEmployees() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(dataFile))) {
-            oos.writeObject(employees);
-            System.out.println("Employee data saved successfully.");
+        try {
+            File backup = new File(dataFile + ".backup");
+            File original = new File(dataFile);
+            if (original.exists()) {
+                Files.copy(original.toPath(), backup.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(dataFile))) {
+                oos.writeObject(employees);
+                System.out.println("Employee data saved successfully.");
+            }
         } catch (IOException e) {
             System.out.println("Error saving employee data: " + e.getMessage());
         }
     }
 
-    // Add a new employee to the file
     public void addEmployee(Employee employee) {
+        if (findEmployeeById(employee.getId()) != null) {
+            System.out.println("Employee with ID " + employee.getId() + " already exists.");
+            return;
+        }
         employees.add(employee);
         System.out.println("Employee added successfully: " + employee.getName());
     }
 
-    // Remove an employee by their ID
     public void removeEmployee(String id) {
         Iterator<Employee> iterator = employees.iterator();
         while (iterator.hasNext()) {
@@ -55,7 +63,6 @@ public class EmployeeManagementSystem {
         System.out.println("Employee with ID " + id + " not found.");
     }
 
-    // Find employee by their ID
     public Employee findEmployeeById(String id) {
         for (Employee emp : employees) {
             if (emp.getId().equals(id)) {
@@ -65,7 +72,6 @@ public class EmployeeManagementSystem {
         return null;
     }
 
-    // Find employees by name
     public List<Employee> findEmployeesByName(String name) {
         List<Employee> result = new ArrayList<>();
         for (Employee emp : employees) {
@@ -76,7 +82,6 @@ public class EmployeeManagementSystem {
         return result;
     }
 
-    // Find employees by performance ratings
     public List<Employee> findEmployeesByPerformance(int rating) {
         List<Employee> result = new ArrayList<>();
         for (Employee emp : employees) {
@@ -87,7 +92,6 @@ public class EmployeeManagementSystem {
         return result;
     }
 
-    // List all the employees
     public void listAllEmployees() {
         if (employees.isEmpty()) {
             System.out.println("No employees in the system.");
@@ -95,11 +99,10 @@ public class EmployeeManagementSystem {
         }
         System.out.println("\nList of all employees:");
         for (Employee emp : employees) {
-            System.out.println(emp);
+            System.out.println(emp.toString());
         }
     }
 
-    // Update employees information
     public void updateEmployee(String id, String name, String department, double baseSalary) {
         Employee emp = findEmployeeById(id);
         if (emp != null) {
@@ -112,27 +115,18 @@ public class EmployeeManagementSystem {
         }
     }
 
-    // Generate sample datas
     public void generateSampleData() {
-        // Clear existing datas
         employees.clear();
-        
-        // Add sample employees
-        addEmployee(new RegularEmployee("E001", "Anish DC", "IT", 50000));
-        addEmployee(new Manager("E002", "Sandesh Karki", "HR", 70000));
-        
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date endDate = sdf.parse("2023-12-31");
-            addEmployee(new Intern("E003", "Ramu Kaka", "Marketing", 20000, endDate));
+            addEmployee(new RegularEmployee("E001", "Ramu Kaka", "IT", 50000, 5000));
+            addEmployee(new Manager("E002", "Kabir Singh", "HR", 70000, 10000));
+            addEmployee(new Intern("E003", "Hari Bahadur", "Marketing", 20000, sdf.parse("2025-12-31")));
+            addEmployee(new RegularEmployee("E004", "Bramanandam", "Finance", 55000, 3000));
+            addEmployee(new Manager("E005", "Munu Kalu", "Operations", 75000, 12000));
+            System.out.println("Sample data generated with " + employees.size() + " employees.");
         } catch (Exception e) {
             System.out.println("Error creating sample data: " + e.getMessage());
         }
-        
-        // Add more sample employees as needed
-        addEmployee(new RegularEmployee("E004", "Shyam Bahadur", "Finance", 55000));
-        addEmployee(new Manager("E005", "Hari Bahadur", "Operations", 75000));
-        
-        System.out.println("Sample data generated with " + employees.size() + " employees.");
     }
 }

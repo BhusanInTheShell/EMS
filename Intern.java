@@ -1,8 +1,8 @@
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
-// Intern class
 public class Intern extends Employee {
+    private static final long serialVersionUID = 1L;
     private Date endDate;
 
     public Intern(String id, String name, String department, double baseSalary, Date endDate) {
@@ -12,7 +12,7 @@ public class Intern extends Employee {
 
     @Override
     public double calculateSalary() {
-        return baseSalary; // Interns don't get bonuses or overtime
+        return baseSalary;
     }
 
     public Date getEndDate() { return endDate; }
@@ -21,7 +21,6 @@ public class Intern extends Employee {
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return super.toString() + ", Type: Intern, Salary: " + calculateSalary() + 
-               ", Internship End Date: " + sdf.format(endDate);
+        return super.toString() + ", Type: Intern, Salary: " + calculateSalary() + ", Internship End Date: " + sdf.format(endDate);
     }
 }

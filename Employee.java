@@ -1,9 +1,9 @@
 import java.io.Serializable;
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
-// Class abstraction
 public abstract class Employee implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected String id;
     protected String name;
     protected String department;
@@ -18,14 +18,12 @@ public abstract class Employee implements Serializable {
         this.name = name;
         this.department = department;
         this.baseSalary = baseSalary;
-        this.performanceRating = 3; // Default average rating
-        this.hireDate = new Date(); // Current date by default
+        this.performanceRating = 3; // Default rating
+        this.hireDate = new Date(); // Current date
     }
 
-    //  Demonstrating polymorphism
     public abstract double calculateSalary();
 
-    // Common methods for all the employees
     public void setPerformanceRating(int rating) {
         if (rating >= 1 && rating <= 5) {
             this.performanceRating = rating;
