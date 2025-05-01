@@ -1,0 +1,12 @@
+type,id,name,department,baseSalary,performanceRating,hireDate,extraField1,extraField2
+Regular,E001,Bhusan,IT,60000.0,3,2025-05-01,5000.0,
+Manager,E002,Alice Smith,HR,70000.0,3,2025-05-01,10000.0,
+Intern,E003,Bob Johnson,Marketing,20000.0,3,2025-05-01,2025-12-31,
+Regular,E004,Charlie Brown,Finance,55000.0,3,2025-05-01,3000.0,
+Manager,E005,Diana Lee,Operations,75000.0,3,2025-05-01,12000.0,
+Regular,E006,Jane Doe,Sales,60000.0,3,2025-05-01,4000.0,
+Manager,E007,John Smith,Engineering,80000.0,3,2025-05-01,15000.0,
+Intern,E008,Emily Davis,Design,25000.0,3,2025-05-01,2025-12-31,
+Regular,E009,Michael Brown,Support,52000.0,3,2025-05-01,2000.0,
+Manager,E010,Sarah Wilson,Product,78000.0,3,2025-05-01,11000.0,
+Regular,12345,Ramu,Doctorate,1.2345678E7,3,2025-05-01,123.0,

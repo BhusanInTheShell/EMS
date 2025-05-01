@@ -5,7 +5,7 @@ import java.util.*;
 public class EMSApplication {
     private static Scanner scanner = new Scanner(System.in);
     private static EmployeeManagementSystem ems;
-    private static final String DATA_FILE = "employee_data.ser";
+    private static final String DATA_FILE = "employee_data.csv";
 
     public static void main(String[] args) {
         ems = new EmployeeManagementSystem(DATA_FILE);
